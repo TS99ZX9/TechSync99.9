@@ -1,16 +1,25 @@
 "use client"
 
+import { Suspense } from "react"
+import dynamic from "next/dynamic"
 import Link from "next/link"
 import { Button } from "@/components/ui/button"
 import { Home, ArrowLeft } from "lucide-react"
 
-export default function NotFound() {
+// Dynamically import the animated client component with no SSR
+const AnimatedNotFound = dynamic(() => import("./not-found-client").then((mod) => mod.NotFoundClient), {
+  ssr: false,
+  loading: () => <StaticNotFound />,
+})
+
+// Static fallback component for SSR and loading state
+function StaticNotFound() {
   return (
     <div className="relative flex min-h-screen flex-col items-center justify-center overflow-hidden">
       {/* Gradient background */}
       <div className="absolute inset-0 bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900 z-0"></div>
 
-      {/* Animated elements */}
+      {/* Static elements */}
       <div className="absolute inset-0 z-0 overflow-hidden">
         <div className="absolute top-1/4 right-1/4 w-64 h-64 bg-cyan-500/20 rounded-full blur-3xl"></div>
         <div className="absolute bottom-1/4 left-1/4 w-64 h-64 bg-purple-500/20 rounded-full blur-3xl"></div>
@@ -49,5 +58,13 @@ export default function NotFound() {
         </div>
       </div>
     </div>
+  )
+}
+
+export default function NotFound() {
+  return (
+    <Suspense fallback={<StaticNotFound />}>
+      <AnimatedNotFound />
+    </Suspense>
   )
 }

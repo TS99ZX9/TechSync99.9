@@ -1,87 +1,134 @@
 "use client"
 
-import { useRef } from "react"
-import { motion, useInView, type Variants } from "framer-motion"
+import { motion } from "framer-motion"
+import { useAnimation } from "./animation-context"
 
 interface AnimatedTextProps {
   text: string
+  type?: "words" | "characters" | "lines"
   className?: string
   delay?: number
-  duration?: number
-  once?: boolean
-  type?: "words" | "chars" | "lines"
 }
 
-export function AnimatedText({
-  text,
-  className = "",
-  delay = 0,
-  duration = 0.05,
-  once = true,
-  type = "words",
-}: AnimatedTextProps) {
-  const ref = useRef<HTMLDivElement>(null)
-  const isInView = useInView(ref, { once, margin: "-10% 0px -10% 0px" })
+export function AnimatedText({ text, type = "lines", className, delay = 0 }: AnimatedTextProps) {
+  const { isReducedMotion } = useAnimation()
 
-  const getAnimationItems = () => {
+  if (isReducedMotion) {
+    return <span className={className}>{text}</span>
+  }
+
+  const getAnimationVariants = () => {
     switch (type) {
-      case "chars":
-        return text.split("")
-      case "lines":
-        return text.split("\n")
       case "words":
+        return {
+          hidden: {},
+          visible: {},
+        }
+      case "characters":
+        return {
+          hidden: {},
+          visible: {},
+        }
+      case "lines":
       default:
-        return text.split(" ")
+        return {
+          hidden: { opacity: 0, y: 20 },
+          visible: {
+            opacity: 1,
+            y: 0,
+            transition: {
+              delay,
+              duration: 0.5,
+            },
+          },
+        }
     }
   }
 
-  const items = getAnimationItems()
-
-  const container: Variants = {
-    hidden: { opacity: 0 },
-    visible: (i = 1) => ({
-      opacity: 1,
-      transition: { staggerChildren: duration, delayChildren: delay },
-    }),
+  const renderText = () => {
+    switch (type) {
+      case "words":
+        return (
+          <motion.span
+            initial="hidden"
+            animate="visible"
+            variants={{
+              hidden: {},
+              visible: {
+                transition: {
+                  staggerChildren: 0.1,
+                  delayChildren: delay,
+                },
+              },
+            }}
+            className={className}
+          >
+            {text.split(" ").map((word, i) => (
+              <motion.span
+                key={i}
+                className="inline-block"
+                variants={{
+                  hidden: { opacity: 0, y: 20 },
+                  visible: {
+                    opacity: 1,
+                    y: 0,
+                    transition: {
+                      duration: 0.5,
+                    },
+                  },
+                }}
+              >
+                {word}
+                {i !== text.split(" ").length - 1 && " "}
+              </motion.span>
+            ))}
+          </motion.span>
+        )
+      case "characters":
+        return (
+          <motion.span
+            initial="hidden"
+            animate="visible"
+            variants={{
+              hidden: {},
+              visible: {
+                transition: {
+                  staggerChildren: 0.03,
+                  delayChildren: delay,
+                },
+              },
+            }}
+            className={className}
+          >
+            {text.split("").map((char, i) => (
+              <motion.span
+                key={i}
+                className="inline-block"
+                variants={{
+                  hidden: { opacity: 0, y: 10 },
+                  visible: {
+                    opacity: 1,
+                    y: 0,
+                    transition: {
+                      duration: 0.3,
+                    },
+                  },
+                }}
+              >
+                {char === " " ? "\u00A0" : char}
+              </motion.span>
+            ))}
+          </motion.span>
+        )
+      case "lines":
+      default:
+        return (
+          <motion.span initial="hidden" animate="visible" variants={getAnimationVariants()} className={className}>
+            {text}
+          </motion.span>
+        )
+    }
   }
 
-  const child: Variants = {
-    hidden: {
-      y: 20,
-      opacity: 0,
-    },
-    visible: {
-      y: 0,
-      opacity: 1,
-      transition: {
-        type: "spring",
-        damping: 12,
-        stiffness: 100,
-      },
-    },
-  }
-
-  return (
-    <motion.div
-      ref={ref}
-      className={`inline-block ${className}`}
-      variants={container}
-      initial="hidden"
-      animate={isInView ? "visible" : "hidden"}
-    >
-      {items.map((item, index) => (
-        <motion.span
-          key={index}
-          variants={child}
-          className="inline-block"
-          style={{
-            whiteSpace: type === "chars" ? "pre" : type === "lines" ? "pre-line" : "normal",
-            marginRight: type === "chars" ? "0" : "0.25em",
-          }}
-        >
-          {item}
-        </motion.span>
-      ))}
-    </motion.div>
-  )
+  return renderText()
 }

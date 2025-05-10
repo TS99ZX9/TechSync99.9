@@ -72,11 +72,11 @@ const config: Config = {
         // Theme colors from ready-made designs
         theme: {
           red: {
-            300: "var(--theme-red-300)",
-            400: "var(--theme-red-400)",
-            500: "var(--theme-red-500)",
-            600: "var(--theme-red-600)",
-            700: "var(--theme-red-700)",
+            300: "#e57373",
+            400: "#ef5350",
+            500: "#f44336",
+            600: "#e53935",
+            700: "#d32f2f",
           },
           cyan: {
             400: "#22d3ee",

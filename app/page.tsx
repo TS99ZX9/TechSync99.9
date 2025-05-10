@@ -29,9 +29,12 @@ import { SectionTransition } from "@/components/animations/section-transition"
 import { AnimatedText } from "@/components/animations/animated-text"
 import { cn } from "@/lib/utils"
 import { useTheme } from "next-themes"
+import { useAnimation } from "@/components/animations/animation-context"
+import { InteractiveElement } from "@/components/animations/interactive-element"
 
 export default function Home() {
   const { theme } = useTheme()
+  const { colors, parallax, isReducedMotion } = useAnimation()
   const [activeTestimonial, setActiveTestimonial] = useState(0)
   const heroRef = useRef<HTMLDivElement>(null)
   const statsRef = useRef<HTMLDivElement>(null)
@@ -183,20 +186,28 @@ export default function Home() {
               </p>
 
               <div className="flex flex-col gap-2 min-[400px]:flex-row pt-4">
-                <Button
-                  size="lg"
-                  className="bg-gradient-to-r from-theme-red-500 to-theme-red-600 hover:from-theme-red-600 hover:to-theme-red-700 text-white border-0 shadow-lg shadow-theme-red-500/20 group"
-                >
-                  Schedule a Consultation
-                  <ArrowRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" />
-                </Button>
-                <Button
-                  variant="outline"
-                  size="lg"
-                  className="border-slate-700 dark:border-slate-300 text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800"
-                >
-                  Explore Services
-                </Button>
+                <InteractiveElement hoverEffect="lift">
+                  <Button
+                    size="lg"
+                    className="bg-gradient-to-r from-theme-red-500 to-theme-red-600 hover:from-theme-red-600 hover:to-theme-red-700 text-white border-0 shadow-lg shadow-theme-red-500/20 group"
+                    style={{
+                      background: colors.primaryGradient,
+                      boxShadow: `0 10px 15px -3px ${colors.primary}20`,
+                    }}
+                  >
+                    Schedule a Consultation
+                    <ArrowRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" />
+                  </Button>
+                </InteractiveElement>
+                <InteractiveElement hoverEffect="color">
+                  <Button
+                    variant="outline"
+                    size="lg"
+                    className="border-slate-700 dark:border-slate-300 text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800"
+                  >
+                    Explore Services
+                  </Button>
+                </InteractiveElement>
               </div>
 
               <div className="flex items-center gap-4 pt-6">
@@ -232,6 +243,13 @@ export default function Home() {
               initial={{ opacity: 0, x: 50 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.5, delay: 0.2 }}
+              style={
+                !isReducedMotion
+                  ? {
+                      transform: `translate3d(${parallax(0.5).x}px, ${parallax(0.5).y}px, 0) rotate(${parallax(0.5).rotate}deg)`,
+                    }
+                  : {}
+              }
             >
               <div className="relative w-full max-w-[600px] aspect-video rounded-xl overflow-hidden group">
                 <div className="absolute inset-0 bg-gradient-to-br from-theme-red-500/10 via-purple-500/10 to-slate-900/10 group-hover:opacity-75 transition-opacity duration-300"></div>
@@ -246,7 +264,10 @@ export default function Home() {
                 />
 
                 <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                  <div className="bg-theme-red-500 rounded-full p-4 text-white">
+                  <div
+                    className="bg-theme-red-500 rounded-full p-4 text-white"
+                    style={{ backgroundColor: colors.primary }}
+                  >
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
                       width="24"
@@ -295,7 +316,8 @@ export default function Home() {
           <p className="text-sm text-slate-700 dark:text-slate-400 mb-2">Scroll to explore</p>
           <div className="w-6 h-10 border-2 border-slate-700 dark:border-slate-400 rounded-full flex justify-center">
             <motion.div
-              className="w-1.5 h-1.5 bg-theme-red-500 rounded-full mt-2"
+              className="w-1.5 h-1.5 rounded-full mt-2"
+              style={{ backgroundColor: colors.primary }}
               animate={{
                 y: [0, 15, 0],
               }}
