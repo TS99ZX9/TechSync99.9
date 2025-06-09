@@ -63,9 +63,9 @@ export function Navbar() {
   return (
     <>
       {/* Top info bar */}
-      <div className="hidden lg:block w-full bg-theme-red-600 text-white py-2 relative z-50">
+      <div className="hidden lg:block w-full bg-brand-600 text-white py-2 relative z-50">
         <div className="container mx-auto px-4 flex justify-between items-center">
-          <div className="flex items-center space-x-6 text-sm">
+          <div className="flex items-center space-x-6 text-sm font-medium">
             <div className="flex items-center space-x-2">
               <Phone className="h-3 w-3" />
               <span>+1 (555) 123-4567</span>
@@ -101,9 +101,7 @@ export function Navbar() {
         className={cn(
           "sticky top-0 z-40 w-full transition-all duration-300",
           isScrolled
-            ? theme === "dark"
-              ? "bg-slate-950/90 backdrop-blur-md border-b border-slate-800/50"
-              : "bg-white/90 backdrop-blur-md border-b border-slate-200/50"
+            ? "bg-white/95 dark:bg-gray-950/95 backdrop-blur-md border-b border-gray-200/50 dark:border-gray-800/50 shadow-lg"
             : "bg-transparent",
         )}
         initial={{ y: -100 }}
@@ -115,13 +113,13 @@ export function Navbar() {
             {/* Logo */}
             <Link href="/" className="flex items-center gap-2 relative z-10">
               <div className="relative w-8 h-8">
-                <div className="absolute inset-0 bg-theme-red-500 rounded-md blur-[5px] opacity-50"></div>
-                <div className="relative bg-slate-950 dark:bg-slate-950 rounded-md flex items-center justify-center h-full border border-theme-red-500/50">
-                  <Layers className="h-5 w-5 text-theme-red-400" />
+                <div className="absolute inset-0 bg-brand-500 rounded-md blur-[5px] opacity-50"></div>
+                <div className="relative bg-white dark:bg-gray-950 rounded-md flex items-center justify-center h-full border border-brand-500/50 shadow-lg">
+                  <Layers className="h-5 w-5 text-brand-500" />
                 </div>
               </div>
               <motion.span
-                className="text-xl font-bold bg-gradient-to-r from-theme-red-400 to-theme-red-600 text-transparent bg-clip-text"
+                className="text-xl font-bold text-gradient-brand"
                 initial={{ opacity: 0, x: -10 }}
                 animate={{ opacity: 1, x: 0 }}
                 transition={{ delay: 0.2, duration: 0.5 }}
@@ -137,26 +135,26 @@ export function Navbar() {
                   {link.submenu ? (
                     <button
                       className={cn(
-                        "flex items-center px-3 py-2 text-sm font-medium rounded-md transition-colors",
+                        "nav-link flex items-center px-4 py-2 text-sm font-medium rounded-lg transition-all duration-200",
                         pathname === link.href || pathname.startsWith(`${link.href}/`)
-                          ? "text-theme-red-500"
-                          : "text-slate-700 dark:text-slate-300 hover:text-theme-red-500 dark:hover:text-theme-red-500",
+                          ? "text-brand-500 bg-brand-50 dark:bg-brand-950/20"
+                          : "text-gray-700 dark:text-gray-300 hover:text-brand-500 hover:bg-gray-100 dark:hover:bg-gray-800",
                       )}
                       onClick={() => setActiveSubmenu(activeSubmenu === link.name ? null : link.name)}
                       onMouseEnter={() => setActiveSubmenu(link.name)}
                       onMouseLeave={() => setActiveSubmenu(null)}
                     >
                       {link.name}
-                      <ChevronDown className="ml-1 h-4 w-4" />
+                      <ChevronDown className="ml-1 h-4 w-4 transition-transform duration-200" />
                     </button>
                   ) : (
                     <Link
                       href={link.href}
                       className={cn(
-                        "px-3 py-2 text-sm font-medium rounded-md transition-colors",
+                        "nav-link px-4 py-2 text-sm font-medium rounded-lg transition-all duration-200",
                         pathname === link.href
-                          ? "text-theme-red-500"
-                          : "text-slate-700 dark:text-slate-300 hover:text-theme-red-500 dark:hover:text-theme-red-500",
+                          ? "text-brand-500 bg-brand-50 dark:bg-brand-950/20"
+                          : "text-gray-700 dark:text-gray-300 hover:text-brand-500 hover:bg-gray-100 dark:hover:bg-gray-800",
                       )}
                     >
                       {link.name}
@@ -173,24 +171,21 @@ export function Navbar() {
                       <AnimatePresence>
                         {activeSubmenu === link.name && (
                           <motion.div
-                            initial={{ opacity: 0, y: 10 }}
-                            animate={{ opacity: 1, y: 0 }}
-                            exit={{ opacity: 0, y: 10 }}
+                            initial={{ opacity: 0, y: 10, scale: 0.95 }}
+                            animate={{ opacity: 1, y: 0, scale: 1 }}
+                            exit={{ opacity: 0, y: 10, scale: 0.95 }}
                             transition={{ duration: 0.2 }}
-                            className={cn(
-                              "py-2 rounded-md shadow-lg border",
-                              theme === "dark" ? "bg-slate-900 border-slate-800" : "bg-white border-slate-200",
-                            )}
+                            className="py-2 rounded-xl shadow-xl border bg-white dark:bg-gray-900 border-gray-200 dark:border-gray-800"
                           >
                             {link.submenu.map((sublink) => (
                               <Link
                                 key={sublink.name}
                                 href={sublink.href}
                                 className={cn(
-                                  "block px-4 py-2 text-sm transition-colors",
+                                  "block px-4 py-3 text-sm transition-all duration-200 font-medium",
                                   pathname === sublink.href
-                                    ? "text-theme-red-500 bg-theme-red-500/10"
-                                    : "text-slate-700 dark:text-slate-300 hover:text-theme-red-500 dark:hover:text-theme-red-500 hover:bg-slate-100 dark:hover:bg-slate-800",
+                                    ? "text-brand-500 bg-brand-50 dark:bg-brand-950/20"
+                                    : "text-gray-700 dark:text-gray-300 hover:text-brand-500 hover:bg-gray-50 dark:hover:bg-gray-800",
                                 )}
                               >
                                 {sublink.name}
@@ -206,16 +201,14 @@ export function Navbar() {
             </nav>
 
             {/* Right side buttons */}
-            <div className="flex items-center gap-2">
+            <div className="flex items-center gap-3">
               <ThemeToggle />
 
-              <Button className="hidden md:flex bg-gradient-to-r from-theme-red-500 to-theme-red-600 hover:from-theme-red-600 hover:to-theme-red-700 text-white border-0">
-                Get Started
-              </Button>
+              <Button className="hidden md:flex btn-primary">Get Started</Button>
 
               {/* Mobile menu button */}
               <button
-                className="md:hidden p-2 rounded-md text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800"
+                className="md:hidden p-2 rounded-lg text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
                 onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
               >
                 {mobileMenuOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
@@ -235,13 +228,10 @@ export function Navbar() {
             exit={{ opacity: 0 }}
             transition={{ duration: 0.2 }}
           >
-            <div className="fixed inset-0 bg-black/50" onClick={() => setMobileMenuOpen(false)} />
+            <div className="fixed inset-0 bg-black/50 backdrop-blur-sm" onClick={() => setMobileMenuOpen(false)} />
 
             <motion.div
-              className={cn(
-                "fixed right-0 top-0 bottom-0 w-full max-w-xs p-6 overflow-y-auto",
-                theme === "dark" ? "bg-slate-950" : "bg-white",
-              )}
+              className="fixed right-0 top-0 bottom-0 w-full max-w-xs p-6 overflow-y-auto bg-white dark:bg-gray-950 shadow-2xl"
               initial={{ x: "100%" }}
               animate={{ x: 0 }}
               exit={{ x: "100%" }}
@@ -250,17 +240,15 @@ export function Navbar() {
               <div className="flex items-center justify-between mb-8">
                 <Link href="/" className="flex items-center gap-2" onClick={() => setMobileMenuOpen(false)}>
                   <div className="relative w-8 h-8">
-                    <div className="absolute inset-0 bg-theme-red-500 rounded-md blur-[5px] opacity-50"></div>
-                    <div className="relative bg-slate-950 dark:bg-slate-950 rounded-md flex items-center justify-center h-full border border-theme-red-500/50">
-                      <Layers className="h-5 w-5 text-theme-red-400" />
+                    <div className="absolute inset-0 bg-brand-500 rounded-md blur-[5px] opacity-50"></div>
+                    <div className="relative bg-white dark:bg-gray-950 rounded-md flex items-center justify-center h-full border border-brand-500/50">
+                      <Layers className="h-5 w-5 text-brand-500" />
                     </div>
                   </div>
-                  <span className="text-xl font-bold bg-gradient-to-r from-theme-red-400 to-theme-red-600 text-transparent bg-clip-text">
-                    TechSync99
-                  </span>
+                  <span className="text-xl font-bold text-gradient-brand">TechSync99</span>
                 </Link>
                 <button
-                  className="p-2 rounded-md text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800"
+                  className="p-2 rounded-lg text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800"
                   onClick={() => setMobileMenuOpen(false)}
                 >
                   <X className="h-6 w-6" />
@@ -274,17 +262,17 @@ export function Navbar() {
                       <>
                         <button
                           className={cn(
-                            "flex items-center justify-between w-full px-3 py-2 text-sm font-medium rounded-md transition-colors",
+                            "flex items-center justify-between w-full px-4 py-3 text-sm font-medium rounded-lg transition-all duration-200",
                             pathname === link.href || pathname.startsWith(`${link.href}/`)
-                              ? "text-theme-red-500 bg-theme-red-500/10"
-                              : "text-slate-700 dark:text-slate-300 hover:text-theme-red-500 dark:hover:text-theme-red-500 hover:bg-slate-100 dark:hover:bg-slate-800",
+                              ? "text-brand-500 bg-brand-50 dark:bg-brand-950/20"
+                              : "text-gray-700 dark:text-gray-300 hover:text-brand-500 hover:bg-gray-100 dark:hover:bg-gray-800",
                           )}
                           onClick={() => setActiveSubmenu(activeSubmenu === link.name ? null : link.name)}
                         >
                           {link.name}
                           <ChevronDown
                             className={cn(
-                              "h-4 w-4 transition-transform",
+                              "h-4 w-4 transition-transform duration-200",
                               activeSubmenu === link.name ? "rotate-180" : "",
                             )}
                           />
@@ -304,10 +292,10 @@ export function Navbar() {
                                   key={sublink.name}
                                   href={sublink.href}
                                   className={cn(
-                                    "block px-3 py-2 text-sm rounded-md transition-colors",
+                                    "block px-4 py-3 text-sm rounded-lg transition-all duration-200 font-medium",
                                     pathname === sublink.href
-                                      ? "text-theme-red-500 bg-theme-red-500/10"
-                                      : "text-slate-700 dark:text-slate-300 hover:text-theme-red-500 dark:hover:text-theme-red-500 hover:bg-slate-100 dark:hover:bg-slate-800",
+                                      ? "text-brand-500 bg-brand-50 dark:bg-brand-950/20"
+                                      : "text-gray-700 dark:text-gray-300 hover:text-brand-500 hover:bg-gray-100 dark:hover:bg-gray-800",
                                   )}
                                   onClick={() => setMobileMenuOpen(false)}
                                 >
@@ -322,10 +310,10 @@ export function Navbar() {
                       <Link
                         href={link.href}
                         className={cn(
-                          "block px-3 py-2 text-sm font-medium rounded-md transition-colors",
+                          "block px-4 py-3 text-sm font-medium rounded-lg transition-all duration-200",
                           pathname === link.href
-                            ? "text-theme-red-500 bg-theme-red-500/10"
-                            : "text-slate-700 dark:text-slate-300 hover:text-theme-red-500 dark:hover:text-theme-red-500 hover:bg-slate-100 dark:hover:bg-slate-800",
+                            ? "text-brand-500 bg-brand-50 dark:bg-brand-950/20"
+                            : "text-gray-700 dark:text-gray-300 hover:text-brand-500 hover:bg-gray-100 dark:hover:bg-gray-800",
                         )}
                         onClick={() => setMobileMenuOpen(false)}
                       >
@@ -336,56 +324,41 @@ export function Navbar() {
                 ))}
               </nav>
 
-              <div className="mt-8 pt-8 border-t border-slate-200 dark:border-slate-800">
-                <Button
-                  className="w-full bg-gradient-to-r from-theme-red-500 to-theme-red-600 hover:from-theme-red-600 hover:to-theme-red-700 text-white border-0"
-                  onClick={() => setMobileMenuOpen(false)}
-                >
+              <div className="mt-8 pt-8 border-t border-gray-200 dark:border-gray-800">
+                <Button className="w-full btn-primary" onClick={() => setMobileMenuOpen(false)}>
                   Get Started
                 </Button>
               </div>
 
-              <div className="mt-8 pt-8 border-t border-slate-200 dark:border-slate-800">
+              <div className="mt-8 pt-8 border-t border-gray-200 dark:border-gray-800">
                 <div className="flex flex-col space-y-4">
                   <div className="flex items-center space-x-2">
-                    <Phone className="h-4 w-4 text-theme-red-500" />
-                    <span className="text-sm text-slate-700 dark:text-slate-300">+1 (555) 123-4567</span>
+                    <Phone className="h-4 w-4 text-brand-500" />
+                    <span className="text-sm text-gray-700 dark:text-gray-300 font-medium">+1 (555) 123-4567</span>
                   </div>
                   <div className="flex items-center space-x-2">
-                    <Mail className="h-4 w-4 text-theme-red-500" />
-                    <span className="text-sm text-slate-700 dark:text-slate-300">info@techsync99.com</span>
+                    <Mail className="h-4 w-4 text-brand-500" />
+                    <span className="text-sm text-gray-700 dark:text-gray-300 font-medium">info@techsync99.com</span>
                   </div>
                   <div className="flex items-center space-x-2">
-                    <MapPin className="h-4 w-4 text-theme-red-500" />
-                    <span className="text-sm text-slate-700 dark:text-slate-300">
+                    <MapPin className="h-4 w-4 text-brand-500" />
+                    <span className="text-sm text-gray-700 dark:text-gray-300 font-medium">
                       123 Tech Avenue, San Francisco, CA
                     </span>
                   </div>
                 </div>
 
                 <div className="flex space-x-4 mt-6">
-                  <a
-                    href="#"
-                    className="text-slate-700 dark:text-slate-300 hover:text-theme-red-500 dark:hover:text-theme-red-500"
-                  >
+                  <a href="#" className="text-gray-700 dark:text-gray-300 hover:text-brand-500 transition-colors">
                     <Facebook className="h-5 w-5" />
                   </a>
-                  <a
-                    href="#"
-                    className="text-slate-700 dark:text-slate-300 hover:text-theme-red-500 dark:hover:text-theme-red-500"
-                  >
+                  <a href="#" className="text-gray-700 dark:text-gray-300 hover:text-brand-500 transition-colors">
                     <Twitter className="h-5 w-5" />
                   </a>
-                  <a
-                    href="#"
-                    className="text-slate-700 dark:text-slate-300 hover:text-theme-red-500 dark:hover:text-theme-red-500"
-                  >
+                  <a href="#" className="text-gray-700 dark:text-gray-300 hover:text-brand-500 transition-colors">
                     <Instagram className="h-5 w-5" />
                   </a>
-                  <a
-                    href="#"
-                    className="text-slate-700 dark:text-slate-300 hover:text-theme-red-500 dark:hover:text-theme-red-500"
-                  >
+                  <a href="#" className="text-gray-700 dark:text-gray-300 hover:text-brand-500 transition-colors">
                     <Linkedin className="h-5 w-5" />
                   </a>
                 </div>
