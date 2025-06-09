@@ -1,11 +1,8 @@
 "use client"
-
-import type React from "react"
-import { createContext, useContext, useState, useEffect } from "react"
+import { createContext, useContext, useState, useEffect, type ReactNode } from "react"
 import { usePathname } from "next/navigation"
-import { resetTracking, trackScroll, updateAnimationVariables } from "@/utils/animation-utils"
 
-type AssistantState = {
+interface AssistantState {
   isOpen: boolean
   isMuted: boolean
   hasInteracted: boolean
@@ -20,7 +17,7 @@ type AssistantState = {
   }[]
 }
 
-type AssistantContextType = {
+interface AssistantContextType {
   state: AssistantState
   openAssistant: () => void
   closeAssistant: () => void
@@ -59,7 +56,7 @@ export function useAssistant() {
   return context
 }
 
-export function AssistantProvider({ children }: { children: React.ReactNode }) {
+export function AssistantProvider({ children }: { children: ReactNode }) {
   const [state, setState] = useState<AssistantState>(defaultState)
   const pathname = usePathname()
 
@@ -71,33 +68,8 @@ export function AssistantProvider({ children }: { children: React.ReactNode }) {
         currentPage: pathname,
         visitedPages: prev.visitedPages.includes(pathname) ? prev.visitedPages : [...prev.visitedPages, pathname],
       }))
-
-      // Reset tracking when navigating to a new page
-      resetTracking()
     }
   }, [pathname])
-
-  // Track scroll events for engagement calculation
-  useEffect(() => {
-    const handleScroll = () => {
-      trackScroll()
-    }
-
-    window.addEventListener("scroll", handleScroll)
-
-    return () => {
-      window.removeEventListener("scroll", handleScroll)
-    }
-  }, [])
-
-  // Update animation variables periodically
-  useEffect(() => {
-    const interval = setInterval(() => {
-      updateAnimationVariables()
-    }, 5000)
-
-    return () => clearInterval(interval)
-  }, [])
 
   // Generate contextual suggestions based on current page
   useEffect(() => {
@@ -152,39 +124,6 @@ export function AssistantProvider({ children }: { children: React.ReactNode }) {
       suggestedTopics: suggestions,
     }))
   }, [state.currentPage])
-
-  // Check if we should proactively offer help
-  useEffect(() => {
-    // Only show proactive suggestions if:
-    // 1. The assistant is not already open
-    // 2. The user hasn't interacted with the assistant recently
-    // 3. The assistant is not muted
-    const shouldOfferHelp =
-      !state.isOpen &&
-      !state.isMuted &&
-      (!state.lastInteraction || new Date().getTime() - state.lastInteraction.getTime() > 60000) &&
-      state.visitedPages.length > 2
-
-    if (shouldOfferHelp) {
-      // Wait 15 seconds before offering help
-      const timer = setTimeout(() => {
-        // Add a proactive message based on user behavior
-        const newMessage = {
-          sender: "ai" as const,
-          message: `I noticed you've been exploring our site. Can I help you find something specific?`,
-          timestamp: new Date(),
-        }
-
-        setState((prev) => ({
-          ...prev,
-          chatHistory: [...prev.chatHistory, newMessage],
-          isOpen: true,
-        }))
-      }, 15000)
-
-      return () => clearTimeout(timer)
-    }
-  }, [state.visitedPages, state.isOpen, state.isMuted, state.lastInteraction])
 
   // Assistant actions
   const openAssistant = () => {

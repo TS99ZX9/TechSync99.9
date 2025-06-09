@@ -3,13 +3,13 @@ import type { Metadata } from "next"
 import { Inter, Poppins } from "next/font/google"
 import "./globals.css"
 import { ThemeProvider } from "@/components/theme-provider"
-import { EnhancedNavbar } from "@/components/layout/enhanced-navbar"
+import { Navbar } from "@/components/layout/navbar"
 import { Footer } from "@/components/layout/footer"
-import { EnhancedBackground } from "@/components/animations/enhanced-background"
+import { AssistantProvider } from "@/components/ai-assistant/ai-assistant-provider"
+import { AIAssistant } from "@/components/ai-assistant/ai-assistant"
 import { CookieConsent } from "@/components/marketing/cookie-consent"
 import { NewsletterPopup } from "@/components/marketing/newsletter-popup"
 import { Analytics } from "@/components/analytics"
-import { METADATA } from "@/lib/constants"
 import { Suspense } from "react"
 
 const inter = Inter({
@@ -20,66 +20,22 @@ const inter = Inter({
 
 const poppins = Poppins({
   subsets: ["latin"],
-  weight: ["400", "500", "600", "700"],
+  weight: ["300", "400", "500", "600", "700"],
   variable: "--font-poppins",
   display: "swap",
 })
 
 export const metadata: Metadata = {
-  title: METADATA.title,
-  description: METADATA.description,
-  keywords: [
-    "software development",
-    "enterprise solutions",
-    "digital transformation",
-    "cloud computing",
-    "AI solutions",
-    "cybersecurity",
-    "data analytics",
-    "custom software",
-    "technology consulting",
-    "web development",
-    "mobile apps",
-    "DevOps",
-    "API development",
-    "microservices",
-    "blockchain",
-  ],
-  authors: [{ name: METADATA.companyName }],
-  creator: METADATA.companyName,
-  publisher: METADATA.companyName,
-  formatDetection: {
-    email: false,
-    address: false,
-    telephone: false,
+  title: {
+    default: "TechSync99 - Advanced Technology Solutions",
+    template: "%s | TechSync99",
   },
-  metadataBase: new URL("https://techsync99.com"),
-  alternates: {
-    canonical: "/",
-  },
-  openGraph: {
-    type: "website",
-    locale: "en_US",
-    url: "https://techsync99.com",
-    title: METADATA.title,
-    description: METADATA.description,
-    siteName: METADATA.companyName,
-    images: [
-      {
-        url: "/og-image.jpg",
-        width: 1200,
-        height: 630,
-        alt: METADATA.title,
-      },
-    ],
-  },
-  twitter: {
-    card: "summary_large_image",
-    title: METADATA.title,
-    description: METADATA.description,
-    images: ["/og-image.jpg"],
-    creator: "@techsync99",
-  },
+  description:
+    "Leading technology company providing innovative software development, AI solutions, and digital transformation services.",
+  keywords: ["technology", "software development", "AI solutions", "digital transformation", "web development"],
+  authors: [{ name: "TechSync99" }],
+  creator: "TechSync99",
+  publisher: "TechSync99",
   robots: {
     index: true,
     follow: true,
@@ -91,9 +47,24 @@ export const metadata: Metadata = {
       "max-snippet": -1,
     },
   },
+  openGraph: {
+    type: "website",
+    locale: "en_US",
+    url: "https://techsync99.com",
+    title: "TechSync99 - Advanced Technology Solutions",
+    description:
+      "Leading technology company providing innovative software development, AI solutions, and digital transformation services.",
+    siteName: "TechSync99",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "TechSync99 - Advanced Technology Solutions",
+    description:
+      "Leading technology company providing innovative software development, AI solutions, and digital transformation services.",
+    creator: "@techsync99",
+  },
   verification: {
     google: "your-google-verification-code",
-    yandex: "your-yandex-verification-code",
   },
     generator: 'v0.dev'
 }
@@ -107,28 +78,24 @@ export default function RootLayout({
     <html lang="en" suppressHydrationWarning>
       <body className={`${inter.variable} ${poppins.variable} font-sans antialiased`}>
         <ThemeProvider attribute="class" defaultTheme="dark" enableSystem={false} disableTransitionOnChange>
-          {/* Enhanced background animation */}
-          <EnhancedBackground density={25} color="rgba(230, 57, 70, 0.15)" speed={0.5} interactive={true} />
+          <AssistantProvider>
+            <div className="relative min-h-screen bg-background">
+              <Suspense fallback={<div>Loading navigation...</div>}>
+                <Navbar />
+              </Suspense>
 
-          {/* Main layout structure */}
-          <Suspense>
-            <div className="relative min-h-screen flex flex-col">
-              <EnhancedNavbar />
-
-              <main className="flex-1 relative z-10">{children}</main>
+              <main className="relative">{children}</main>
 
               <Footer />
+
+              <Suspense fallback={null}>
+                <AIAssistant />
+                <CookieConsent />
+                <NewsletterPopup />
+                <Analytics />
+              </Suspense>
             </div>
-          </Suspense>
-
-          {/* Marketing components */}
-          <Suspense>
-            <CookieConsent />
-            <NewsletterPopup />
-          </Suspense>
-
-          {/* Analytics */}
-          <Analytics />
+          </AssistantProvider>
         </ThemeProvider>
       </body>
     </html>
