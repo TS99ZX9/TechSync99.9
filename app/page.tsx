@@ -20,9 +20,6 @@ import {
 
 import { AdvancedButton } from "@/components/ui/advanced-button"
 import { InteractiveCard } from "@/components/ui/interactive-card"
-import { GlowEffect } from "@/components/animations/glow-effect"
-import { Container } from "@/components/layouts/container"
-import { ELEMENTS } from "@/lib/constants"
 
 export default function HomePage() {
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 })
@@ -114,43 +111,42 @@ export default function HomePage() {
   ]
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-950 via-gray-900 to-gray-950">
+    <div className="min-h-screen section-primary">
       {/* Hero Section */}
-      <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
+      <section className="relative min-h-screen flex items-center justify-center overflow-hidden section-padding">
         {/* Animated background elements */}
         <motion.div className="absolute inset-0 opacity-30" style={{ y: y1 }}>
-          <div className="absolute top-20 left-10 w-72 h-72 bg-primary-500/20 rounded-full blur-3xl" />
-          <div className="absolute bottom-20 right-10 w-96 h-96 bg-accent-500/20 rounded-full blur-3xl" />
+          <div className="absolute top-20 left-10 w-72 h-72 bg-red-500/20 rounded-full blur-3xl" />
+          <div className="absolute bottom-20 right-10 w-96 h-96 bg-cyan-500/20 rounded-full blur-3xl" />
         </motion.div>
 
-        <Container className="text-center relative z-10" maxWidth="2xl">
+        <div className="container mx-auto container-padding text-center relative z-10 max-w-6xl">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, ease: [0.19, 1, 0.22, 1] }}
           >
-            <div className={ELEMENTS.badges.primary + " mb-6"}>🚀 Next-Generation Technology Solutions</div>
+            <div className="badge-primary mb-8">🚀 Next-Generation Technology Solutions</div>
 
-            <h1 className="text-4xl md:text-6xl lg:text-7xl font-bold mb-6 leading-tight">
-              <span className="text-white">Transform Your Business with</span>
-              <br />
-              <span className="text-gradient">Cutting-Edge Technology</span>
+            <h1 className="mb-8 leading-tight">
+              <span className="block">Transform Your Business with</span>
+              <span className="block text-gradient">Cutting-Edge Technology</span>
             </h1>
 
-            <p className="text-xl md:text-2xl text-gray-300 mb-8 max-w-3xl mx-auto leading-relaxed">
+            <p className="text-2xl md:text-3xl mb-12 max-w-4xl mx-auto leading-relaxed">
               We deliver innovative software solutions, cloud infrastructure, and digital transformation services that
               propel your business into the future.
             </p>
 
-            <div className="flex flex-col sm:flex-row gap-4 justify-center items-center mb-12">
+            <div className="flex flex-col sm:flex-row gap-6 justify-center items-center mb-16">
               <AdvancedButton
                 variant="gradient"
                 size="xl"
                 rounded="full"
                 glow={true}
-                rightIcon={<ArrowRight className="h-5 w-5" />}
+                rightIcon={<ArrowRight className="h-6 w-6" />}
                 iconAnimation="slide"
-                className="min-w-[200px]"
+                className="min-w-[250px]"
               >
                 Start Your Project
               </AdvancedButton>
@@ -159,31 +155,31 @@ export default function HomePage() {
                 variant="outline"
                 size="xl"
                 rounded="full"
-                rightIcon={<ChevronRight className="h-5 w-5" />}
+                rightIcon={<ChevronRight className="h-6 w-6" />}
                 iconAnimation="slide"
-                className="min-w-[200px]"
+                className="min-w-[250px]"
               >
                 View Our Work
               </AdvancedButton>
             </div>
 
             {/* Trust indicators */}
-            <div className="flex flex-wrap justify-center items-center gap-8 text-gray-400">
-              <div className="flex items-center gap-2">
-                <CheckCircle className="h-5 w-5 text-green-500" />
-                <span>ISO 27001 Certified</span>
+            <div className="flex flex-wrap justify-center items-center gap-8 text-lg">
+              <div className="flex items-center gap-3">
+                <CheckCircle className="h-6 w-6 text-green-500" />
+                <span className="text-slate-300">ISO 27001 Certified</span>
               </div>
-              <div className="flex items-center gap-2">
-                <Shield className="h-5 w-5 text-blue-500" />
-                <span>SOC 2 Compliant</span>
+              <div className="flex items-center gap-3">
+                <Shield className="h-6 w-6 text-blue-500" />
+                <span className="text-slate-300">SOC 2 Compliant</span>
               </div>
-              <div className="flex items-center gap-2">
-                <Award className="h-5 w-5 text-yellow-500" />
-                <span>AWS Partner</span>
+              <div className="flex items-center gap-3">
+                <Award className="h-6 w-6 text-yellow-500" />
+                <span className="text-slate-300">AWS Partner</span>
               </div>
             </div>
           </motion.div>
-        </Container>
+        </div>
 
         {/* Scroll indicator */}
         <motion.div
@@ -191,182 +187,198 @@ export default function HomePage() {
           animate={{ y: [0, 10, 0] }}
           transition={{ duration: 2, repeat: Number.POSITIVE_INFINITY }}
         >
-          <div className="w-6 h-10 border-2 border-gray-400 rounded-full flex justify-center">
-            <div className="w-1 h-3 bg-gray-400 rounded-full mt-2 animate-pulse" />
+          <div className="w-6 h-10 border-2 border-red-400 rounded-full flex justify-center">
+            <div className="w-1 h-3 bg-red-400 rounded-full mt-2 animate-pulse" />
           </div>
         </motion.div>
       </section>
 
       {/* Stats Section */}
-      <section className="py-16 md:py-24 bg-gray-900/50">
-        <Container>
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
+      <section className="section-padding section-secondary">
+        <div className="container mx-auto container-padding">
+          <div className="cards-grid cards-grid-4">
             {stats.map((stat, index) => (
               <InteractiveCard
                 key={stat.label}
                 hoverEffect="glow"
                 delay={index * 0.1}
-                className="text-center p-6 bg-gray-800/50 border border-gray-700 rounded-xl"
+                size="stats"
+                className="text-center"
               >
-                <stat.icon className="h-8 w-8 text-primary-500 mx-auto mb-4" />
-                <div className="text-3xl md:text-4xl font-bold text-white mb-2">{stat.value}</div>
-                <div className="text-gray-400">{stat.label}</div>
+                <div className="card-content">
+                  <div className="card-header">
+                    <stat.icon className="h-12 w-12 text-red-500 mx-auto mb-6" />
+                  </div>
+                  <div className="card-body">
+                    <div className="text-4xl md:text-5xl font-bold text-white mb-4">{stat.value}</div>
+                    <div className="text-xl text-slate-300">{stat.label}</div>
+                  </div>
+                </div>
               </InteractiveCard>
             ))}
           </div>
-        </Container>
+        </div>
       </section>
 
       {/* Services Section */}
-      <section className="py-16 md:py-24 lg:py-32">
-        <Container>
-          <div className="text-center mb-16">
-            <div className={ELEMENTS.badges.secondary + " mb-6"}>Our Services</div>
-            <h2 className="text-3xl md:text-5xl font-bold text-white mb-6">Comprehensive Technology Solutions</h2>
-            <p className="text-xl text-gray-300 max-w-3xl mx-auto">
+      <section className="section-padding section-primary">
+        <div className="container mx-auto container-padding">
+          <div className="text-center mb-20">
+            <div className="badge-secondary mb-8">Our Services</div>
+            <h2 className="mb-8">Comprehensive Technology Solutions</h2>
+            <p className="text-2xl max-w-4xl mx-auto">
               From custom software development to cloud infrastructure, we provide end-to-end technology services that
               drive business growth.
             </p>
           </div>
 
-          <div className="grid md:grid-cols-2 gap-8">
+          <div className="cards-grid cards-grid-2">
             {services.map((service, index) => (
-              <GlowEffect key={service.title} className="h-full">
-                <InteractiveCard
-                  hoverEffect="lift"
-                  delay={index * 0.2}
-                  className="h-full p-8 bg-gray-800/50 border border-gray-700 rounded-xl"
-                >
-                  <div className={`w-16 h-16 rounded-xl bg-gradient-to-br ${service.color} p-4 mb-6`}>
-                    <service.icon className="h-8 w-8 text-white" />
+              <InteractiveCard key={service.title} hoverEffect="lift" delay={index * 0.2} size="lg">
+                <div className="card-content">
+                  <div className="card-header">
+                    <div className={`w-20 h-20 rounded-2xl bg-gradient-to-br ${service.color} p-5 mb-8`}>
+                      <service.icon className="h-10 w-10 text-white" />
+                    </div>
+                    <h3 className="text-3xl font-bold mb-6">{service.title}</h3>
                   </div>
 
-                  <h3 className="text-2xl font-bold text-white mb-4">{service.title}</h3>
+                  <div className="card-body">
+                    <p className="text-xl mb-8 leading-relaxed">{service.description}</p>
 
-                  <p className="text-gray-300 mb-6 leading-relaxed">{service.description}</p>
+                    <ul className="space-y-3 mb-8">
+                      {service.features.map((feature) => (
+                        <li key={feature} className="flex items-center text-lg">
+                          <CheckCircle className="h-5 w-5 text-green-500 mr-4 flex-shrink-0" />
+                          {feature}
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
 
-                  <ul className="space-y-2 mb-6">
-                    {service.features.map((feature) => (
-                      <li key={feature} className="flex items-center text-gray-300">
-                        <CheckCircle className="h-4 w-4 text-green-500 mr-3 flex-shrink-0" />
-                        {feature}
-                      </li>
-                    ))}
-                  </ul>
-
-                  <AdvancedButton
-                    variant="ghost"
-                    rightIcon={<ArrowRight className="h-4 w-4" />}
-                    iconAnimation="slide"
-                    className="group"
-                  >
-                    Learn More
-                  </AdvancedButton>
-                </InteractiveCard>
-              </GlowEffect>
+                  <div className="card-footer">
+                    <AdvancedButton
+                      variant="ghost"
+                      rightIcon={<ArrowRight className="h-5 w-5" />}
+                      iconAnimation="slide"
+                      className="group text-lg"
+                    >
+                      Learn More
+                    </AdvancedButton>
+                  </div>
+                </div>
+              </InteractiveCard>
             ))}
           </div>
-        </Container>
+        </div>
       </section>
 
       {/* Technologies Section */}
-      <section className="py-16 md:py-24 bg-gray-900/50">
-        <Container>
-          <div className="text-center mb-16">
-            <div className={ELEMENTS.badges.accent + " mb-6"}>Technologies We Use</div>
-            <h2 className="text-3xl md:text-5xl font-bold text-white mb-6">Cutting-Edge Tech Stack</h2>
-            <p className="text-xl text-gray-300 max-w-3xl mx-auto">
+      <section className="section-padding section-accent">
+        <div className="container mx-auto container-padding">
+          <div className="text-center mb-20">
+            <div className="badge-accent mb-8">Technologies We Use</div>
+            <h2 className="mb-8">Cutting-Edge Tech Stack</h2>
+            <p className="text-2xl max-w-4xl mx-auto">
               We leverage the latest technologies and frameworks to build robust, scalable, and future-proof solutions.
             </p>
           </div>
 
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
+          <div className="cards-grid cards-grid-4">
             {technologies.map((tech, index) => (
               <InteractiveCard
                 key={tech.name}
                 hoverEffect="scale"
                 delay={index * 0.1}
-                className="p-6 bg-gray-800/50 border border-gray-700 rounded-xl text-center group"
+                size="sm"
+                className="text-center group"
               >
-                <div className="text-4xl mb-4 group-hover:scale-110 transition-transform duration-300">{tech.icon}</div>
-                <div className="text-white font-medium">{tech.name}</div>
+                <div className="card-content">
+                  <div className="text-6xl mb-6 group-hover:scale-110 transition-transform duration-300">
+                    {tech.icon}
+                  </div>
+                  <div className="text-xl font-medium">{tech.name}</div>
+                </div>
               </InteractiveCard>
             ))}
           </div>
-        </Container>
+        </div>
       </section>
 
       {/* Testimonials Section */}
-      <section className="py-16 md:py-24 lg:py-32">
-        <Container>
-          <div className="text-center mb-16">
-            <div className={ELEMENTS.badges.primary + " mb-6"}>Client Testimonials</div>
-            <h2 className="text-3xl md:text-5xl font-bold text-white mb-6">What Our Clients Say</h2>
-            <p className="text-xl text-gray-300 max-w-3xl mx-auto">
+      <section className="section-padding section-primary">
+        <div className="container mx-auto container-padding">
+          <div className="text-center mb-20">
+            <div className="badge-primary mb-8">Client Testimonials</div>
+            <h2 className="mb-8">What Our Clients Say</h2>
+            <p className="text-2xl max-w-4xl mx-auto">
               Don't just take our word for it. Here's what our clients have to say about working with TechSync99.
             </p>
           </div>
 
-          <div className="grid md:grid-cols-3 gap-8">
+          <div className="cards-grid cards-grid-3">
             {testimonials.map((testimonial, index) => (
-              <InteractiveCard
-                key={testimonial.name}
-                hoverEffect="lift"
-                delay={index * 0.2}
-                className="p-8 bg-gray-800/50 border border-gray-700 rounded-xl"
-              >
-                <div className="flex items-center mb-4">
-                  {[...Array(testimonial.rating)].map((_, i) => (
-                    <Star key={i} className="h-5 w-5 text-yellow-500 fill-current" />
-                  ))}
-                </div>
+              <InteractiveCard key={testimonial.name} hoverEffect="lift" delay={index * 0.2} size="lg">
+                <div className="card-content">
+                  <div className="card-header">
+                    <div className="flex items-center mb-6">
+                      {[...Array(testimonial.rating)].map((_, i) => (
+                        <Star key={i} className="h-6 w-6 text-yellow-500 fill-current" />
+                      ))}
+                    </div>
+                  </div>
 
-                <p className="text-gray-300 mb-6 leading-relaxed italic">"{testimonial.content}"</p>
+                  <div className="card-body">
+                    <p className="text-xl mb-8 leading-relaxed italic">"{testimonial.content}"</p>
+                  </div>
 
-                <div className="flex items-center">
-                  <img
-                    src={testimonial.avatar || "/placeholder.svg"}
-                    alt={testimonial.name}
-                    className="w-12 h-12 rounded-full mr-4"
-                  />
-                  <div>
-                    <div className="text-white font-medium">{testimonial.name}</div>
-                    <div className="text-gray-400 text-sm">{testimonial.role}</div>
+                  <div className="card-footer">
+                    <div className="flex items-center">
+                      <img
+                        src={testimonial.avatar || "/placeholder.svg"}
+                        alt={testimonial.name}
+                        className="w-16 h-16 rounded-full mr-4"
+                      />
+                      <div>
+                        <div className="text-xl font-medium">{testimonial.name}</div>
+                        <div className="text-lg text-slate-400">{testimonial.role}</div>
+                      </div>
+                    </div>
                   </div>
                 </div>
               </InteractiveCard>
             ))}
           </div>
-        </Container>
+        </div>
       </section>
 
       {/* CTA Section */}
-      <section className="py-16 md:py-24 lg:py-32 bg-gradient-to-br from-primary-900/20 to-accent-900/20">
-        <Container className="text-center">
+      <section className="section-padding section-secondary">
+        <div className="container mx-auto container-padding text-center">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8 }}
             viewport={{ once: true }}
           >
-            <div className={ELEMENTS.badges.primary + " mb-6"}>Ready to Get Started?</div>
+            <div className="badge-primary mb-8">Ready to Get Started?</div>
 
-            <h2 className="text-3xl md:text-5xl font-bold text-white mb-6">Let's Build Something Amazing Together</h2>
+            <h2 className="mb-8">Let's Build Something Amazing Together</h2>
 
-            <p className="text-xl text-gray-300 mb-8 max-w-3xl mx-auto">
+            <p className="text-2xl mb-12 max-w-4xl mx-auto">
               Transform your business with our cutting-edge technology solutions. Contact us today for a free
               consultation and project estimate.
             </p>
 
-            <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
+            <div className="flex flex-col sm:flex-row gap-6 justify-center items-center">
               <AdvancedButton
                 variant="gradient"
                 size="xl"
                 rounded="full"
                 glow={true}
-                rightIcon={<Rocket className="h-5 w-5" />}
+                rightIcon={<Rocket className="h-6 w-6" />}
                 iconAnimation="slide"
-                className="min-w-[200px]"
+                className="min-w-[250px]"
               >
                 Start Your Project
               </AdvancedButton>
@@ -375,19 +387,19 @@ export default function HomePage() {
                 variant="outline"
                 size="xl"
                 rounded="full"
-                rightIcon={<Target className="h-5 w-5" />}
+                rightIcon={<Target className="h-6 w-6" />}
                 iconAnimation="slide"
-                className="min-w-[200px]"
+                className="min-w-[250px]"
               >
                 Schedule Consultation
               </AdvancedButton>
             </div>
 
-            <div className="mt-8 text-gray-400">
+            <div className="mt-12 text-xl text-slate-400">
               <p>✨ Free consultation • 💰 Competitive pricing • 🚀 Fast delivery</p>
             </div>
           </motion.div>
-        </Container>
+        </div>
       </section>
     </div>
   )

@@ -12,7 +12,7 @@ interface InteractiveCardProps {
   hoverEffect?: "glow" | "lift" | "tilt" | "scale" | "border" | "none"
   onClick?: () => void
   delay?: number
-  size?: "sm" | "md" | "lg" | "xl" | "hero"
+  size?: "sm" | "md" | "lg" | "xl" | "hero" | "stats"
 }
 
 export function InteractiveCard({
@@ -38,30 +38,32 @@ export function InteractiveCard({
   const getSizeClasses = () => {
     switch (size) {
       case "sm":
-        return "p-4 min-h-[12rem] rounded-lg"
+        return "service-card"
       case "md":
-        return "p-6 min-h-[16rem] rounded-xl"
+        return "feature-card"
       case "lg":
-        return "p-8 min-h-[20rem] rounded-2xl"
+        return "hero-card"
       case "xl":
-        return "p-10 min-h-[24rem] rounded-3xl"
+        return "hero-card"
       case "hero":
-        return "p-12 min-h-[28rem] rounded-3xl"
+        return "hero-card"
+      case "stats":
+        return "stats-card"
       default:
-        return "p-6 min-h-[16rem] rounded-xl"
+        return "feature-card"
     }
   }
 
   const getHoverEffectClasses = () => {
     switch (hoverEffect) {
       case "glow":
-        return "transition-all duration-500 hover:shadow-glow-large hover:shadow-[0_0_50px_rgba(239,68,68,0.4)]"
+        return "transition-all duration-500 hover:shadow-[0_0_50px_rgba(239,68,68,0.4)]"
       case "lift":
         return "transition-all duration-500 hover:-translate-y-4 hover:scale-[1.02] hover:shadow-2xl"
       case "scale":
         return "transition-all duration-500 hover:scale-[1.05]"
       case "border":
-        return "transition-all duration-500 hover:border-primary-500 hover:shadow-lg"
+        return "transition-all duration-500 hover:border-brand-primary hover:shadow-lg"
       case "tilt":
         return "transition-all duration-500 hover:rotate-1 hover:-translate-y-2"
       case "none":
@@ -97,7 +99,7 @@ export function InteractiveCard({
       {/* Dynamic highlight effect */}
       {isHovered && (
         <motion.div
-          className="absolute inset-0 opacity-100 pointer-events-none"
+          className="absolute inset-0 opacity-100 pointer-events-none rounded-2xl"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
@@ -107,11 +109,11 @@ export function InteractiveCard({
         />
       )}
 
-      {/* Content */}
-      <div className="relative z-10">{children}</div>
+      {/* Content wrapper with proper flex layout */}
+      <div className="card-content relative z-10">{children}</div>
 
       {/* Animated border */}
-      <div className="absolute inset-0 rounded-inherit border-2 border-transparent bg-gradient-to-r from-primary-500/20 to-secondary-500/20 opacity-0 transition-opacity duration-500 hover:opacity-100" />
+      <div className="absolute inset-0 rounded-2xl border-2 border-transparent bg-gradient-to-r from-red-500/20 to-cyan-500/20 opacity-0 transition-opacity duration-500 hover:opacity-100" />
     </motion.div>
   )
 }
